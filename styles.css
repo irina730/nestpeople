@@ -297,7 +297,7 @@ a { color: inherit; text-decoration: none; }
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .hero-inner, .coverage-inner, .about-inner, .contact-inner { grid-template-columns: 1fr; }
-  .cards { grid-template-columns: 1fr; }
+  .cards, .pricing { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr 1fr; }
   .nav-links {
     position: fixed; inset: 70px 0 auto 0; background: #fff; flex-direction: column;
