@@ -43,4 +43,33 @@ try { saved = localStorage.getItem('np-lang'); } catch (e) {}
 const initial = saved || (navigator.language && navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en');
 applyLang(initial);
 
-// Contact uses an embedded Google Form — no custom submit handling needed.
+// ===== Contact form: posts to Google Forms backend, styled UI kept =====
+const GFORM = 'https://docs.google.com/forms/d/e/1FAIpQLSf9zbXF_59w3FWeOWZ4ucbhsNJRVTPVIo05qN2D4EYoSkWVgA/formResponse';
+const form = document.getElementById('contactForm');
+const note = document.getElementById('formNote');
+const submitBtn = form.querySelector('button[type="submit"]');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!form.checkValidity()) { form.reportValidity(); return; }
+
+  const original = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = '…';
+
+  try {
+    // Google Forms doesn't send CORS headers; no-cors still records the response.
+    await fetch(GFORM, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form))
+    });
+    note.hidden = false;
+    form.reset();
+    note.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = original;
+  }
+});
