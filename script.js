@@ -57,7 +57,7 @@ form.addEventListener('submit', async (e) => {
   submitBtn.textContent = '…';
 
   try {
-    const res = await fetch('https://formsubmit.co/ajax/nestpeoplehr@gmail.com', {
+    const res = await fetch('https://formsubmit.co/ajax/54cd1d42b8a85245de121edf56193ee4', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(Object.fromEntries(new FormData(form)))
