@@ -43,34 +43,4 @@ try { saved = localStorage.getItem('np-lang'); } catch (e) {}
 const initial = saved || (navigator.language && navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en');
 applyLang(initial);
 
-// ===== Contact form: AJAX submit to FormSubmit, with inline success =====
-const form = document.getElementById('contactForm');
-const note = document.getElementById('formNote');
-const submitBtn = form.querySelector('button[type="submit"]');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  if (!form.checkValidity()) { form.reportValidity(); return; }
-
-  const original = submitBtn.textContent;
-  submitBtn.disabled = true;
-  submitBtn.textContent = '…';
-
-  try {
-    const res = await fetch('https://formsubmit.co/ajax/54cd1d42b8a85245de121edf56193ee4', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(Object.fromEntries(new FormData(form)))
-    });
-    if (!res.ok) throw new Error('bad response');
-    note.hidden = false;
-    form.reset();
-    note.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  } catch (err) {
-    // Fallback: let the browser do a normal POST to the form action.
-    form.submit();
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = original;
-  }
-});
+// Contact uses an embedded Google Form — no custom submit handling needed.
